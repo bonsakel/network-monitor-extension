@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Network Monitor",
+  "version": "1.0",
+  "description": "Monitor and analyze outgoing HTTP/HTTPS requests locally.",
+  "permissions": [
+    "webRequest",
+    "storage",
+    "tabs",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "128": "icons/icon128.png"
+  }
+}

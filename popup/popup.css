@@ -1,0 +1,45 @@
+/* popup.css - minimal, clean styling */
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 300px;
+}
+.container {
+  padding: 12px;
+}
+h1 {
+  font-size: 16px;
+  margin: 0 0 8px 0;
+}
+.controls {
+  margin-bottom: 8px;
+}
+#clearBtn {
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+#clearBtn:hover { opacity: 0.95; }
+.empty {
+  color: #666;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+table.logs {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+table.logs th, table.logs td {
+  border: 1px solid #ddd;
+  padding: 6px;
+  text-align: left;
+}
+table.logs thead th {
+  background: #f6f6f6;
+}
+tr:nth-child(even) td { background: #fafafa; }
