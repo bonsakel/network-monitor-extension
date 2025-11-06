@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       logsTable.style.display = 'none';
       noLogs.textContent = currentLogs.length === 0 ? 'No recent requests recorded' : 'No results for filter';
       noLogs.style.display = 'block';
+      updateMetrics(currentLogs);
       return;
     }
 
@@ -41,14 +42,51 @@ document.addEventListener('DOMContentLoaded', async () => {
       const tdStatus = document.createElement('td');
 
       tdDomain.textContent = entry.domain || entry.url || '-';
-      tdLatency.textContent = (entry.latencyMs != null) ? entry.latencyMs : '-';
-      tdStatus.textContent = (entry.statusCode != null) ? entry.statusCode : (entry.error ? 'ERR' : '-');
+
+      // Latency styling: small text for fast, warn for medium, err for slow
+      const latencyVal = (entry.latencyMs != null) ? entry.latencyMs : null;
+      tdLatency.textContent = latencyVal != null ? `${latencyVal} ms` : '-';
+      if (latencyVal != null) {
+        if (latencyVal < 150) tdLatency.className = 'muted';
+        else if (latencyVal < 400) tdLatency.className = 'badge-warn';
+        else tdLatency.className = 'badge-err';
+      }
+
+      // Status badge
+      const statusCode = entry.statusCode != null ? entry.statusCode : (entry.error ? 'ERR' : '-');
+      const badge = document.createElement('span');
+      badge.textContent = statusCode;
+      let badgeClass = 'badge-err';
+      if (statusCode === 'ERR' || statusCode === 0) badgeClass = 'badge-err';
+      else if (statusCode >= 200 && statusCode < 300) badgeClass = 'badge-ok';
+      else if (statusCode >= 300 && statusCode < 400) badgeClass = 'badge-warn';
+      else if (statusCode >= 400) badgeClass = 'badge-err';
+      badge.className = 'badge ' + badgeClass;
+      tdStatus.appendChild(badge);
 
       tr.appendChild(tdDomain);
       tr.appendChild(tdLatency);
       tr.appendChild(tdStatus);
       logsBody.appendChild(tr);
     });
+
+    updateMetrics(currentLogs);
+  }
+
+  // Update dashboard metrics
+  function updateMetrics(allLogs) {
+    const total = allLogs.length || 0;
+    const avg = total ? Math.round((allLogs.reduce((s, l) => s + (l.latencyMs || 0), 0) / total)) : 0;
+    const successes = allLogs.filter(l => (l.statusCode >= 200 && l.statusCode < 300)).length;
+    const successRate = total ? Math.round((successes / total) * 100) : 0;
+
+    const totalEl = document.getElementById('totalCount');
+    const avgEl = document.getElementById('avgLatency');
+    const succEl = document.getElementById('successRate');
+
+    if (totalEl) totalEl.textContent = total;
+    if (avgEl) avgEl.textContent = total ? `${avg} ms` : '-';
+    if (succEl) succEl.textContent = total ? `${successRate} %` : '-';
   }
 
   // Load initial retention value

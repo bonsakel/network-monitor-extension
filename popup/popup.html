@@ -8,31 +8,55 @@
   </head>
   <body>
     <div class="container">
-      <h1>Network Monitor</h1>
-      <div class="controls">
-        <input id="filterInput" placeholder="Filter domain..." />
-        <button id="clearBtn">Clear Logs</button>
-      </div>
-      <div class="controls controls-2">
+      <header class="header">
+        <div class="title">
+          <img src="../icons/icon128.png" alt="logo" class="logo" />
+          <h1>Network Monitor</h1>
+        </div>
+        <div class="header-actions">
+          <input id="filterInput" placeholder="Filter domain..." />
+          <button id="clearBtn" title="Clear Logs">Clear</button>
+        </div>
+      </header>
+
+      <section class="cards">
+        <div class="card">
+          <div class="card-title">Total Requests</div>
+          <div id="totalCount" class="card-value">0</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Avg Latency</div>
+          <div id="avgLatency" class="card-value">- ms</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Success Rate</div>
+          <div id="successRate" class="card-value">- %</div>
+        </div>
+      </section>
+
+      <section class="controls-row">
         <button id="exportBtn">Export JSON</button>
-        <button id="sampleBtn">Insert Sample Data</button>
+        <button id="sampleBtn">Insert Sample</button>
         <label class="retention">Retention:
           <input id="retentionInput" type="number" min="10" max="1000" step="10" value="100" />
         </label>
-      </div>
+      </section>
+
       <div id="noLogs" class="empty">Loading...</div>
-      <table id="logsTable" class="logs" aria-live="polite">
-        <thead>
-          <tr>
-            <th>Domain</th>
-            <th>Latency (ms)</th>
-            <th>Status Code</th>
-          </tr>
-        </thead>
-        <tbody id="logsBody">
-          <!-- Rows inserted by popup.js -->
-        </tbody>
-      </table>
+      <div class="table-wrap">
+        <table id="logsTable" class="logs" aria-live="polite">
+          <thead>
+            <tr>
+              <th>Domain</th>
+              <th>Latency</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="logsBody">
+            <!-- Rows inserted by popup.js -->
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <script src="popup.js"></script>
