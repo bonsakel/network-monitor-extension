@@ -14,13 +14,14 @@ function getDomain(url) {
   }
 }
 
-// Save a log entry to chrome.storage.local keeping max 100 entries
+// Save a log entry to chrome.storage.local keeping max retention (default 100 entries)
 async function saveLog(entry) {
   try {
-    const data = await chrome.storage.local.get({ networkLogs: [] });
+    const data = await chrome.storage.local.get({ networkLogs: [], retention: 100 });
     const logs = data.networkLogs || [];
+    const retention = Number.isInteger(data.retention) ? data.retention : 100;
     logs.unshift(entry); // newest first
-    if (logs.length > 100) logs.length = 100; // trim to 100
+    if (logs.length > retention) logs.length = retention; // trim to retention
     await chrome.storage.local.set({ networkLogs: logs });
   } catch (err) {
     // Storage failures are non-fatal; log to console for debugging
@@ -103,5 +104,50 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       sendResponse({ ok: true });
     });
     return true;
+  }
+  if (msg && msg.type === 'EXPORT_LOGS') {
+    // Return logs for export
+    chrome.storage.local.get({ networkLogs: [] }, (data) => {
+      sendResponse({ logs: data.networkLogs || [] });
+    });
+    return true;
+  }
+  if (msg && msg.type === 'INSERT_SAMPLE') {
+    // Insert a small set of sample logs for testing
+    const sample = [];
+    for (let i = 0; i < 15; i++) {
+      sample.push({
+        url: `https://example${i}.com/path`,
+        domain: `example${i}.com`,
+        method: 'GET',
+        statusCode: 200,
+        latencyMs: Math.floor(Math.random() * 300) + 20,
+        timestamp: new Date(Date.now() - i * 60000).toISOString()
+      });
+    }
+    chrome.storage.local.get({ networkLogs: [] }, (data) => {
+      const logs = (data.networkLogs || []).slice();
+      // prepend sample
+      const combined = sample.concat(logs);
+      chrome.storage.local.set({ networkLogs: combined.slice(0, 100) }, () => {
+        sendResponse({ ok: true });
+      });
+    });
+    return true;
+  }
+});
+
+// When retention setting changes (or other storage changes), we keep behavior consistent
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'local') return;
+  if (changes.retention) {
+    const newRetention = changes.retention.newValue;
+    // Trim existing logs if needed
+    chrome.storage.local.get({ networkLogs: [] }, (data) => {
+      const logs = data.networkLogs || [];
+      if (logs.length > newRetention) {
+        chrome.storage.local.set({ networkLogs: logs.slice(0, newRetention) });
+      }
+    });
   }
 });

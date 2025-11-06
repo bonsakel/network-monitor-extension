@@ -10,7 +10,15 @@
     <div class="container">
       <h1>Network Monitor</h1>
       <div class="controls">
+        <input id="filterInput" placeholder="Filter domain..." />
         <button id="clearBtn">Clear Logs</button>
+      </div>
+      <div class="controls controls-2">
+        <button id="exportBtn">Export JSON</button>
+        <button id="sampleBtn">Insert Sample Data</button>
+        <label class="retention">Retention:
+          <input id="retentionInput" type="number" min="10" max="1000" step="10" value="100" />
+        </label>
       </div>
       <div id="noLogs" class="empty">Loading...</div>
       <table id="logsTable" class="logs" aria-live="polite">

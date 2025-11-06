@@ -13,6 +13,7 @@ Features
 - Stores logs locally with a max history of 100 entries
 - Popup shows the 10 most recent requests
 - Clear logs button to reset stored data
+ - Advanced: filtering by domain, export logs as JSON, insert sample data for testing, and retention setting
 
 How It Works
 ------------
@@ -35,6 +36,22 @@ Future Improvements
 - Add request details (full URL, headers, timing breakdown)
 - Export logs as JSON/CSV
 - Add options page for retention settings and toggles
+
+Advanced features added in this version
+-------------------------------------
+
+- Filter input in the popup to quickly search domains.
+- Export JSON button to download stored logs.
+- Insert Sample Data button to populate sample logs for testing the UI.
+- Retention input to control how many logs to keep (default 100).
+
+Usage notes
+-----------
+
+- Use the Filter box in the popup to narrow results by domain.
+- Click Export JSON to download the current stored logs as a JSON file.
+- Use Insert Sample Data to add sample entries for quick UI testing.
+- Change the Retention number to keep more or fewer logs; storage will be trimmed automatically.
 
 Notes
 -----
