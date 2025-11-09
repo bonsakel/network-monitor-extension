@@ -112,29 +112,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     });
     return true;
   }
-  if (msg && msg.type === 'INSERT_SAMPLE') {
-    // Insert a small set of sample logs for testing
-    const sample = [];
-    for (let i = 0; i < 15; i++) {
-      sample.push({
-        url: `https://example${i}.com/path`,
-        domain: `example${i}.com`,
-        method: 'GET',
-        statusCode: 200,
-        latencyMs: Math.floor(Math.random() * 300) + 20,
-        timestamp: new Date(Date.now() - i * 60000).toISOString()
-      });
-    }
-    chrome.storage.local.get({ networkLogs: [] }, (data) => {
-      const logs = (data.networkLogs || []).slice();
-      // prepend sample
-      const combined = sample.concat(logs);
-      chrome.storage.local.set({ networkLogs: combined.slice(0, 100) }, () => {
-        sendResponse({ ok: true });
-      });
-    });
-    return true;
-  }
+  // INSERT_SAMPLE removed
 });
 
 // When retention setting changes (or other storage changes), we keep behavior consistent

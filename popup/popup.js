@@ -2,7 +2,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const clearBtn = document.getElementById('clearBtn');
   const exportBtn = document.getElementById('exportBtn');
-  const sampleBtn = document.getElementById('sampleBtn');
   const retentionInput = document.getElementById('retentionInput');
   const filterInput = document.getElementById('filterInput');
   const logsBody = document.getElementById('logsBody');
@@ -178,12 +177,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  sampleBtn.addEventListener('click', () => {
-    if (!confirm('Insert sample logs for testing?')) return;
-    chrome.runtime.sendMessage({ type: 'INSERT_SAMPLE' }, (resp) => {
-      loadAndRender();
-    });
-  });
+  // Insert Sample feature removed: no-op
 
   retentionInput.addEventListener('change', () => {
     let v = parseInt(retentionInput.value, 10);

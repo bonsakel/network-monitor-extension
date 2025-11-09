@@ -13,7 +13,7 @@ Features
 - Stores logs locally with a max history of 100 entries
 - Popup shows the 10 most recent requests
 - Clear logs button to reset stored data
- - Advanced: filtering by domain, export logs as JSON, insert sample data for testing, and retention setting
+ - Advanced: filtering by domain, export logs as JSON, and retention setting
 
 How It Works
 ------------
