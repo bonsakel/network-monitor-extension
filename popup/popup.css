@@ -7,27 +7,37 @@ body {
   width: 360px; /* bit wider for dashboard */
   color: #222;
   background: linear-gradient(180deg, #f7fbff 0%, #ffffff 100%);
+  -webkit-font-smoothing: antialiased;
 }
 .container {
-  padding: 14px;
+  /* add horizontal padding to create more side space and more top space */
+  padding: 20px 20px 16px 20px;
 }
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  padding-top: 6px; /* add vertical breathing room inside header */
+  padding-bottom: 6px;
+  flex-wrap: nowrap; /* prevent header from wrapping and hiding controls */
 }
-.title { display: flex; align-items: center; gap: 8px; }
-.logo { width: 32px; height: 32px; border-radius: 6px; }
+h1 { font-size: 14px; margin: 0; font-weight: 600; }
+
+.title { display: flex; align-items: center; gap: 12px; flex: 0 0 auto; }
+.logo { width: 36px; height: 36px; border-radius: 8px; margin-left: 2px; }
 h1 { font-size: 14px; margin: 0; font-weight: 600; }
 
 .header-actions {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   align-items: center;
+  padding-left: 6px; /* extra left padding so the header line doesn't feel cramped */
+  padding-right: 6px; /* extra right padding to separate the clear button */
+  flex: 0 0 auto;
 }
-.header-actions input { padding: 8px 10px; border-radius: 8px; border: 1px solid #e6eef9; background: #fff; width: 160px; }
-.header-actions button { background: transparent; color: #e53935; border: 1px solid #ffd6d6; padding: 6px 8px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+.header-actions input { padding: 8px 12px; border-radius: 8px; border: 1px solid #e6eef9; background: #fff; width: 120px; min-width: 80px; }
+.header-actions button { background: transparent; color: #e53935; border: 1px solid #ffd6d6; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-weight: 600; min-width: 60px; }
 
 .cards { display: flex; gap: 10px; margin-top: 12px; }
 .card { flex: 1; background: linear-gradient(180deg, #fff 0%, #f6fbff 100%); border-radius: 8px; padding: 10px; box-shadow: 0 2px 6px rgba(20,40,80,0.06); }
@@ -42,7 +52,7 @@ h1 { font-size: 14px; margin: 0; font-weight: 600; }
 
 .empty { color: #6b7280; font-size: 13px; margin: 12px 0; }
 
-.table-wrap { max-height: 220px; overflow: auto; margin-top: 6px; }
+.table-wrap { max-height: 220px; overflow: auto; margin-top: 6px; padding: 0 8px; }
 table.logs { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 320px; }
 table.logs thead th { position: sticky; top: 0; background: linear-gradient(180deg,#f4f8ff 0%, #fff 100%); text-align: left; padding: 8px; font-size: 12px; color: #334155; }
 table.logs tbody td { padding: 10px 8px; border-bottom: 1px solid #eef2f7; }
