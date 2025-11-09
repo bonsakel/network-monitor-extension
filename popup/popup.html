@@ -15,7 +15,6 @@
         </div>
         <div class="header-actions">
           <input id="filterInput" placeholder="Filter domain..." />
-          <button id="clearBtn" title="Clear Logs">Clear</button>
         </div>
       </header>
 
@@ -37,9 +36,19 @@
       <section class="controls-row">
         <button id="exportBtn">Export JSON</button>
         <button id="sampleBtn">Insert Sample</button>
+        <button id="clearBtn">Clear Logs</button>
         <label class="retention">Retention:
           <input id="retentionInput" type="number" min="10" max="1000" step="10" value="100" />
         </label>
+      </section>
+
+      <!-- Speed chart -->
+      <section class="speed-section">
+        <div class="chart-card">
+          <div class="chart-title">Network Speed (recent)</div>
+          <div id="speedChart" class="speed-chart" aria-hidden="false"></div>
+          <div id="speedValue" class="muted">-</div>
+        </div>
       </section>
 
       <div id="noLogs" class="empty">Loading...</div>

@@ -87,6 +87,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (totalEl) totalEl.textContent = total;
     if (avgEl) avgEl.textContent = total ? `${avg} ms` : '-';
     if (succEl) succEl.textContent = total ? `${successRate} %` : '-';
+    // render speed chart using recent latencies
+    renderSpeedChart(allLogs);
+  }
+
+  // Render a compact bar-chart representing recent latencies
+  function renderSpeedChart(allLogs) {
+    const chartEl = document.getElementById('speedChart');
+    const speedEl = document.getElementById('speedValue');
+    if (!chartEl || !speedEl) return;
+
+    const recent = (allLogs || []).slice(0, 10); // newest-first
+    if (recent.length === 0) {
+      chartEl.innerHTML = '<div class="muted">No data</div>';
+      speedEl.textContent = '-';
+      return;
+    }
+
+    // latencies in ms, convert to numbers
+    const latencies = recent.map(l => Number(l.latencyMs || 0));
+    const maxLatency = Math.max(...latencies, 0) || 1;
+
+    // create bars (oldest on left)
+    const bars = [];
+    for (let i = latencies.length - 1; i >= 0; i--) {
+      const val = latencies[i];
+      // height: inverse proportional to latency (lower latency => taller bar)
+      const heightPct = Math.max(6, Math.round((1 - (val / maxLatency)) * 100));
+      let cls = 'small';
+      if (val >= 400) cls = 'large';
+      else if (val >= 150) cls = 'medium';
+      bars.push(`<div class="bar ${cls}" style="height:${heightPct}%" title="${val} ms"></div>`);
+    }
+
+    chartEl.innerHTML = bars.join('');
+
+    // compute responsiveness score (not real Mbps; a proxy based on latency)
+    const avg = Math.round(latencies.reduce((s, v) => s + v, 0) / latencies.length);
+    const score = Math.min(100, Math.round((1000 / Math.max(avg, 1)) * 10));
+    speedEl.textContent = `${score} • Avg ${avg} ms`;
   }
 
   // Load initial retention value
